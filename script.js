@@ -19,9 +19,6 @@ function showWord() {
         const span = document.createElement('span');
         span.textContent = element;
         span.classList.add('element');
-        if (index < currentElementIndex) {
-            span.classList.add('c');
-        }
         wordContainer.append(span);
     });
 }
@@ -37,12 +34,8 @@ function handleInput(event) {
         
         if (currentElementIndex === currentWord.length) {
             correctCount++;
-            if (correctCount === 5) {
-                alert("Поздравляем! Вы выиграли!");
-                resetGame();
-            } else {
-                setRandomWord();
-            }
+            checkGameStatus();
+            setTimeout(setRandomWord, 0);
         }
         
     } else {
@@ -56,18 +49,23 @@ function handleInput(event) {
         if (wrongCount === 5) {
             alert("К сожалению, вы проиграли!");
             resetGame();
-            return;
         }
     }
 
     updateStatus();
-    showWord();
 }
 
 function updateStatus() {
     document.querySelector('.correct-count').textContent = correctCount;
     document.querySelector('.wrong-count').textContent = wrongCount;
     document.querySelector('.word-mistakes').textContent = currentWordMistakes;
+}
+
+function checkGameStatus() {
+    if (correctCount === 5) {
+        alert("Поздравляем! Вы выиграли!");
+        resetGame();
+    }
 }
 
 function resetGame() {

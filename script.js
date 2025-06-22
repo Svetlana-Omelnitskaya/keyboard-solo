@@ -10,6 +10,7 @@ function setRandomWord() {
     currentElementIndex = 0;
     currentWordMistakes = 0;
     showWord();
+    updateStatus();
 }
 
 function showWord() {
@@ -29,11 +30,16 @@ function handleInput(event) {
     if (inputElement === currentWord[currentElementIndex]) {
         const wordContainer = document.querySelector('.word');
         const currentSpan = wordContainer.children[currentElementIndex];
+        currentSpan.classList.remove('w');
         currentSpan.classList.add('c');
         currentElementIndex++;
-        
+
         if (currentElementIndex === currentWord.length) {
-            correctCount++;
+            if (currentWordMistakes === 0) {
+                correctCount++;
+            } else {
+                wrongCount++;
+            }
             checkGameStatus();
             setTimeout(setRandomWord, 0);
         }
@@ -41,14 +47,11 @@ function handleInput(event) {
     } else {
         const wordContainer = document.querySelector('.word');
         const currentSpan = wordContainer.children[currentElementIndex];
+        currentSpan.classList.remove('c');
         currentSpan.classList.add('w');
-        wrongCount++;
-        currentWordMistakes++;
-        updateStatus();
-        
-        if (wrongCount === 5) {
-            alert("К сожалению, вы проиграли!");
-            resetGame();
+
+        if (currentElementIndex < currentWord.length) {
+            currentWordMistakes++;
         }
     }
 
@@ -62,7 +65,10 @@ function updateStatus() {
 }
 
 function checkGameStatus() {
-    if (correctCount === 5) {
+    if (wrongCount === 5) {
+        alert("К сожалению, вы проиграли!");
+        resetGame();
+    } else if (correctCount === 5) {
         alert("Поздравляем! Вы выиграли!");
         resetGame();
     }
@@ -72,6 +78,7 @@ function resetGame() {
     correctCount = 0;
     wrongCount = 0;
     currentElementIndex = 0;
+    currentWordMistakes = 0;
     updateStatus();
     setRandomWord();
 }

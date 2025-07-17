@@ -6,6 +6,7 @@ let wrongCount = 0;
 let currentWordMistakes = 0;
 
 function setRandomWord() {
+    checkGameStatus();
     currentWord = words[Math.floor(Math.random() * words.length)];
     currentElementIndex = 0;
     currentWordMistakes = 0;
@@ -40,7 +41,7 @@ function handleInput(event) {
             } else {
                 wrongCount++;
             }
-            checkGameStatus();
+            updateStatus();
             setTimeout(setRandomWord, 0);
         }
         
